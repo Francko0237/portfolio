@@ -1208,6 +1208,44 @@ img {
     height: 18px;
 }
 
+/* APK Download button — Android green, with subtle pulse */
+.project-link-apk {
+    color: #3ddc84 !important; /* Android green */
+    border: 1px solid rgba(61, 220, 132, 0.25);
+    border-radius: 8px;
+    padding: 5px 12px;
+    transition: var(--transition-smooth);
+    position: relative;
+}
+
+.project-link-apk::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: rgba(61, 220, 132, 0.06);
+    transition: var(--transition-smooth);
+}
+
+.project-link-apk:hover {
+    color: #ffffff !important;
+    border-color: #3ddc84;
+    background-color: rgba(61, 220, 132, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 18px rgba(61, 220, 132, 0.25);
+}
+
+.project-link-apk svg {
+    width: 18px;
+    height: 18px;
+    animation: apkBounce 2.2s ease-in-out infinite;
+}
+
+@keyframes apkBounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(2px); }
+}
+
 /* ==========================================================================
    TIMELINE (EXPERIENCE) SECTION
    ========================================================================== */

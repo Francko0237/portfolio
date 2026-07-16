@@ -1,0 +1,76 @@
+# ============================================================
+#  Portfolio — YAMGA MOKUBE FRANCK DANIEL
+#  Configuration Apache pour InfinityFree
+# ============================================================
+
+# ── 1. Force HTTPS (SSL) ────────────────────────────────────
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ── 2. Supprimer le www (optionnel, uniformise l'URL) ────────
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L]
+
+# ── 3. Page d'accueil par défaut ─────────────────────────────
+DirectoryIndex index.html
+
+# ── 4. Page 404 personnalisée ────────────────────────────────
+ErrorDocument 404 /index.html
+
+# ── 5. Compression GZIP (réduit le temps de chargement) ─────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+# ── 6. Cache navigateur (performance) ────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Images — 6 mois
+    ExpiresByType image/jpg        "access plus 6 months"
+    ExpiresByType image/jpeg       "access plus 6 months"
+    ExpiresByType image/png        "access plus 6 months"
+    ExpiresByType image/webp       "access plus 6 months"
+    ExpiresByType image/svg+xml    "access plus 1 month"
+    ExpiresByType image/x-icon     "access plus 1 year"
+
+    # CSS & JS — 1 mois
+    ExpiresByType text/css                  "access plus 1 month"
+    ExpiresByType application/javascript    "access plus 1 month"
+    ExpiresByType text/javascript           "access plus 1 month"
+
+    # HTML — pas de cache (toujours la version fraîche)
+    ExpiresByType text/html                 "access plus 0 seconds"
+
+    # Polices
+    ExpiresByType font/woff2                "access plus 1 year"
+    ExpiresByType font/woff                 "access plus 1 year"
+</IfModule>
+
+# ── 7. En-têtes de sécurité ───────────────────────────────────
+<IfModule mod_headers.c>
+    # Protection contre le clickjacking
+    Header set X-Frame-Options "SAMEORIGIN"
+    # Protection XSS
+    Header set X-XSS-Protection "1; mode=block"
+    # Pas de sniffing MIME
+    Header set X-Content-Type-Options "nosniff"
+    # Cache control pour HTML
+    <FilesMatch "\.(html|htm)$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ── 8. Types MIME corrects ────────────────────────────────────
+<IfModule mod_mime.c>
+    AddType image/webp               .webp
+    AddType font/woff2               .woff2
+    AddType application/javascript   .js
+    AddType text/css                 .css
+</IfModule>
