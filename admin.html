@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Administration — YAMGA MOKUBE FRANCK DANIEL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #09090b;
+            --bg-secondary: #121214;
+            --bg-card: rgba(24, 24, 27, 0.6);
+            --text-primary: #f4f4f5;
+            --text-secondary: #a1a1aa;
+            --accent-color: #3ddc84; /* Android Green */
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glow-color: rgba(61, 220, 132, 0.15);
+            --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #fafafa;
+            --bg-secondary: #f4f4f5;
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --text-primary: #09090b;
+            --text-secondary: #71717a;
+            --accent-color: #008f4c;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --glow-color: rgba(0, 143, 76, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        /* Glassmorphism Container */
+        .admin-card {
+            background-color: var(--bg-card);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 48px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transition: var(--transition-smooth);
+        }
+
+        .logo {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            color: var(--text-primary);
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition-smooth);
+        }
+
+        input[type="password"]:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px var(--glow-color);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            background-color: var(--accent-color);
+            color: #09090b;
+        }
+
+        /* Dashboard View (Hidden initially) */
+        .dashboard {
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .stat-box {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-val {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.88rem;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: 24px;
+            transition: var(--transition-smooth);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            transition: var(--transition-smooth);
+        }
+
+        .back-link:hover svg {
+            transform: translateX(-4px);
+        }
+
+        /* Theme toggle button inside admin */
+        .theme-btn {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-smooth);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+
+        .theme-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Theme Toggle -->
+    <button class="theme-btn" id="theme-toggle" aria-label="Changer de thème">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+        </svg>
+    </button>
+
+    <!-- Login Card -->
+    <div class="admin-card" id="login-container">
+        <div class="logo">Francko<span>.</span></div>
+        <h1>Accès Administration</h1>
+        <p>Veuillez entrer le mot de passe administrateur pour consulter les statistiques du portfolio.</p>
+        
+        <form id="login-form" onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" required placeholder="••••••••" autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn">Se connecter</button>
+            <div class="error-message" id="error-msg">Mot de passe incorrect.</div>
+        </form>
+
+        <a href="index.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Retour au site
+        </a>
+    </div>
+
+    <!-- Dashboard Card (Hidden) -->
+    <div class="admin-card dashboard" id="dashboard-container">
+        <div class="logo">Francko<span>.</span> Admin</div>
+        <h1>Statistiques</h1>
+        <p>Aperçu des performances de visite de votre portfolio professionnel.</p>
+
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-label">Visiteurs Uniques (Session)</div>
+                <div class="stat-val" id="visitor-value">...</div>
+            </div>
+        </div>
+
+        <button onclick="handleLogout()" class="btn" style="background-color: transparent; border: 1px solid var(--border-color); color: var(--text-primary);">
+            Se déconnecter
+        </button>
+
+        <br>
+        <a href="index.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Retour au site
+        </a>
+    </div>
+
+    <script>
+        // Theme logic
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Simple Session Auth (Password is: francko237)
+        const PASS_HASH = "francko237"; 
+
+        if (sessionStorage.getItem('admin_authenticated') === 'true') {
+            showDashboard();
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const inputPass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            if (inputPass === PASS_HASH) {
+                sessionStorage.setItem('admin_authenticated', 'true');
+                showDashboard();
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('dashboard-container').style.display = 'block';
+            fetchStats();
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('admin_authenticated');
+            window.location.reload();
+        }
+
+        function fetchStats() {
+            const namespace = 'francko0237';
+            const key = 'portfolio';
+            const valueEl = document.getElementById('visitor-value');
+
+            fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && typeof data.count !== 'undefined') {
+                        valueEl.textContent = Number(data.count).toLocaleString();
+                    } else {
+                        valueEl.textContent = 'Non disponible';
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    valueEl.textContent = 'Erreur';
+                });
+        }
+    </script>
+</body>
+</html>

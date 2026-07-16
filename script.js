@@ -280,6 +280,22 @@ const init = () => {
         });
     };
 
+    // VISITOR COUNTER - SILENT INCREMENT
+    // ==========================================================================
+    const namespace = 'francko0237';
+    const key = 'portfolio';
+    const hasVisited = sessionStorage.getItem('site_visited');
+    const isLoginPage = window.location.pathname.includes('admin');
+
+    if (!hasVisited && !isLoginPage) {
+        fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+            .then(res => res.json())
+            .then(data => {
+                sessionStorage.setItem('site_visited', 'true');
+            })
+            .catch(err => console.warn('Counter increment failed:', err));
+    }
+
     window.addEventListener('scroll', activateNavLink);
     activateNavLink();
 };

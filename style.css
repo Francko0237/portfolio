@@ -1449,6 +1449,31 @@ img {
     }
 }
 
+.visitor-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    background-color: var(--bg-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition-smooth);
+}
+
+.visitor-counter:hover {
+    border-color: var(--accent-color);
+    background-color: var(--bg-card);
+    transform: translateY(-1px);
+}
+
+.visitor-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--accent-color);
+}
+
 /* ==========================================================================
    ANIMATIONS & SCROLL APPARITION
    ========================================================================== */
